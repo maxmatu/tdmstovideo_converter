@@ -4,6 +4,7 @@ import numpy as np
 from nptdms import TdmsFile
 import time
 import argparse
+from tqdm import tqdm
 
 def get_video_metadata(videotdms, metadatatdms):
     """
@@ -101,14 +102,14 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     tdms = TdmsFile(bfile, memmap_dir=tempdir)  # open tdms binary file as a memmapped object
     openingend = time.time()
 
-    print('         ... memmap opening took: ', np.round(openingend-openstart, 2))
+    print('         ... memmap opening took: {}s'.format(np.round(openingend-openstart, 2)))
     print('     Extracting data')
     tdms = tdms.__dict__['objects']["/'cam0'/'data'"].data.reshape((tot_frames, props['height'], props['width']), order='C')
     tdms = tdms[:, :, :(props['width']+props['padding'])]  # reshape
 
     # Write to Video
     print('     Writing video at: ', savepath)
-    write_clip(tdms, savepath, params, tot_frames, props['width'], props['height'], props['fps'])
+    write_clip(tdms, savepath, tot_frames, props['width'], props['height'], props['fps'])
     print('     Finished writing video in {}s.'.format(round(time.time()-openingend, 2)))
 
     # Check if all the frames have been converted

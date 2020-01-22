@@ -7,7 +7,7 @@ conda create -n tdmsconverter python=3.7
 ```
 Once the environment is created activate it with `conda activate tdmsconverter` and install other packages:
 ```
-pip install numpy opencv-python npTDMS
+pip install numpy opencv-python npTDMS tqdms
 ```
 
 Don't forget to clone this repository somewhere. 
