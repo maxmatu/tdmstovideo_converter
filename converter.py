@@ -58,7 +58,7 @@ def write_clip(data, savename, tot_frames, w, h, framerate, iscolor=False):
 
 
 
-def convert(videotdms, metadatatdms, use_local_fld=False):
+def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     """ 
         Converts a video from .tdms to .mp4. Needs to have access to a metadata .tdms file
         to get the expected frame size and number of frames to convert.
@@ -66,9 +66,18 @@ def convert(videotdms, metadatatdms, use_local_fld=False):
         :param videotdms: string with path to video .tdms
         :param metadatatdms: string with path to metadata .tdms
         :param use_local_fld: if a string is passed the memmapped .tdms file is saved in a user given folder
+        :param output_path: if passed it should be a string with the path to where the video .mp4 will be saved
     """
     start = time.time()
     print("Ready to convert: ", videotdms)
+
+    # Get output path
+    if not output_path:
+        savepath = videotdms.split(".")[0]+".mp4"
+    else:
+        if os.path.isfile(output_path):
+            raise FileExistsError("Output path points to an already existing file: {}".format(output_path))
+        savepath = output_path
 
     # Get metadata
     props, tot_frames = self.extract_framesize_from_metadata(self.filep)
@@ -98,7 +107,6 @@ def convert(videotdms, metadatatdms, use_local_fld=False):
     tdms = tdms[:, :, :(props['width']+props['padding'])]  # reshape
 
     # Write to Video
-    savepath = videotdms.split(".")[0]+".mp4"
     print('     Writing video at: ' savepath)
     write_clip(tdms, savepath, params, tot_frames, props['width'], props['height'], props['fps'])
     print('     Finished writing video in {}s.'.format(round(time.time()-openingend, 2)))
@@ -132,6 +140,15 @@ def get_parser():
     )
 
     parser.add_argument(
+        "-op",
+        "--output-path",
+        dest="output_path",
+        type=str,
+        default=False,
+        help="Path to where the video .mp4 will be saved.",
+    )
+
+    parser.add_argument(
         "-lf",
         "--local-folder",
         dest="use_local_fld",
@@ -148,6 +165,7 @@ def main():
         args.videotdms,
         args.metadatatdms,
         use_local_fld=args.use_local_fld,
+        output_path=args.output_path,
     )
 
 
