@@ -50,6 +50,12 @@ If that is the case, then you can use:
 If you wish you can pass the additional argument `--dest-fld path_to_dest_folder` to specify a folder where the videos will be saved. Alternative each video.mp4 file will be saved in its respective subfolder. The video.mp4 files will be saved as: `../subfoldername_videoname.mp4`
 
 
+## Other
+If you forget what the arguments to each script are you can always to something like:
+`python converter.py -h` to get a reminder. 
+
+For any issue/feature request get in touch or submit an issue. 
+
 
 
 
