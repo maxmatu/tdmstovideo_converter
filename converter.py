@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from nptdms import TdmsFile
 import time
+import argparse
 
 def get_video_metadata(videotdms, metadatatdms):
     """
@@ -57,7 +58,15 @@ def write_clip(data, savename, tot_frames, w, h, framerate, iscolor=False):
 
 
 
-def main(videotdms, metadatatdms, use_local_fld=False):
+def convert(videotdms, metadatatdms, use_local_fld=False):
+    """ 
+        Converts a video from .tdms to .mp4. Needs to have access to a metadata .tdms file
+        to get the expected frame size and number of frames to convert.
+
+        :param videotdms: string with path to video .tdms
+        :param metadatatdms: string with path to metadata .tdms
+        :param use_local_fld: if a string is passed the memmapped .tdms file is saved in a user given folder
+    """
     start = time.time()
     print("Ready to convert: ", videotdms)
 
@@ -104,3 +113,43 @@ def main(videotdms, metadatatdms, use_local_fld=False):
     # fin
     end = time.time()
     print('     Converted {} frames in {}s\n\n'.format(tot_frames, round(end-start)))
+
+
+
+def get_parser():
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        dest="videotdms",
+        type=str,
+        help="path to video .tdms",
+    )
+    parser.add_argument(
+        dest="metadatatdms",
+        type=str,
+        help="path to metadata .tdms",
+    )
+
+    parser.add_argument(
+        "-lf",
+        "--local-folder",
+        dest="use_local_fld",
+        type=str,
+        default=False,
+        help="Path to a local folder used to save memmap.",
+    )
+    return parser
+
+
+def main():
+    args = get_parser().parse_args()
+    convert(
+        args.videotdms,
+        args.metadatatdms,
+        use_local_fld=args.use_local_fld,
+    )
+
+
+if __name__ == "__main__":
+    main()
