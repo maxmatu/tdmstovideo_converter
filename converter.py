@@ -116,7 +116,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     cap = cv2.VideoCapture(savepath)
     nframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     print('     Converted video has {} frames, original video had: {}'.format(nframes, tot_frames))
-    if not tot_frames == frames_counter:
+    if not tot_frames == nframes:
         raise ValueError('Number of frames in converted clip doesnt match that of original clip')
 
     # fin
