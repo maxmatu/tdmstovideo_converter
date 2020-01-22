@@ -18,7 +18,7 @@ def get_video_metadata(videotdms, metadatatdms):
     print(" extracting metadata from: ", metadatatdms)
 
     # Load metadata
-    metadata = TdmsFile(metadata_file)
+    metadata = TdmsFile(metadatatdms)
 
     # Get values to return
     metadata_object = metadata.object()
@@ -28,7 +28,7 @@ def get_video_metadata(videotdms, metadatatdms):
     if props['width'] > 0:
         # Get size of video to be converted 
         videosize = os.path.getsize(videotdms)
-        tot = np.int(round(video_size/(props['width']*props['height'])))  # tot number of frames 
+        tot = np.int(round(videosize/(props['width']*props['height'])))  # tot number of frames 
         if tot != props['last']:
             raise ValueError('Calculated number of frames doesnt match what is stored in the metadata: {} vs {}'.format(tot, props['last']))
     else:
@@ -80,7 +80,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
         savepath = output_path
 
     # Get metadata
-    props, tot_frames = self.extract_framesize_from_metadata(self.filep)
+    props, tot_frames = get_video_metadata(videotdms, metadatatdms)
 
     # Get temp directory to store memmapped data
     if use_local_fld:
@@ -93,7 +93,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
 
     # Open tdms as binary
     print("     opening as binary")
-    bfile = open(videotmds, 'rb')
+    bfile = open(videotdms, 'rb')
 
     # Open memmapped
     print('         ...binary opened, opening mmemmapped')
@@ -107,7 +107,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     tdms = tdms[:, :, :(props['width']+props['padding'])]  # reshape
 
     # Write to Video
-    print('     Writing video at: ' savepath)
+    print('     Writing video at: ', savepath)
     write_clip(tdms, savepath, params, tot_frames, props['width'], props['height'], props['fps'])
     print('     Finished writing video in {}s.'.format(round(time.time()-openingend, 2)))
 
