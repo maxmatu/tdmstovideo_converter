@@ -78,7 +78,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     else:
         savepath = output_path
     if os.path.isfile(savepath):
-        raise FileExistsError("Output path points to an already existing file: {}".format(output_path))
+        raise FileExistsError("Output path points to an already existing file: {}".format(savepath))
 
     # Get metadata
     props, tot_frames = get_video_metadata(videotdms, metadatatdms)
@@ -92,14 +92,12 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     else:
         tempdir = os.path.split(videotdms)[0]
 
-    # Open tdms as binary
-    print("     opening as binary")
-    bfile = open(videotdms, 'rb')
+
 
     # Open memmapped
-    print('         ...binary opened, opening mmemmapped')
+    print('     Opening mmemmapped in: ' + tempdir)
     openstart = time.time()
-    tdms = TdmsFile(bfile, memmap_dir=tempdir)  # open tdms binary file as a memmapped object
+    tdms = TdmsFile(videotdms, memmap_dir=tempdir)  # open tdms binary file as a memmapped object
     openingend = time.time()
 
     print('         ... memmap opening took: {}s'.format(np.round(openingend-openstart, 2)))
