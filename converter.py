@@ -53,7 +53,7 @@ def write_clip(data, savename, tot_frames, w, h, framerate, iscolor=False):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     videowriter = cv2.VideoWriter(savename, fourcc, framerate, (w, h), iscolor)
 
-    for framen in tqdm(range(tot_frames+1)):
+    for framen in tqdm(range(tot_frames)):
         videowriter.write(data[framen])
     videowriter.release()
 
@@ -76,9 +76,9 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     if not output_path:
         savepath = videotdms.split(".")[0]+".mp4"
     else:
-        if os.path.isfile(output_path):
-            raise FileExistsError("Output path points to an already existing file: {}".format(output_path))
         savepath = output_path
+    if os.path.isfile(savepath):
+        raise FileExistsError("Output path points to an already existing file: {}".format(output_path))
 
     # Get metadata
     props, tot_frames = get_video_metadata(videotdms, metadatatdms)
