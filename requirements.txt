@@ -2,3 +2,4 @@ cv2
 nptdms
 numpy
 tqdm
+opencv-python

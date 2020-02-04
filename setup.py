@@ -1,5 +1,15 @@
 from setuptools import setup, find_namespace_packages
 
+requirements = [
+    "numpy",
+    "opencv-python",
+    "nptdms",
+    "configparser",
+    "pandas",
+    "tqdm",
+
+]
+
 setup(
     name="tdmstovideo",
     version="0.0.0.2",
@@ -7,6 +17,7 @@ setup(
     description="Code to convert Mantis TDMS files to mp4",
     packages=find_namespace_packages(exclude=()),
     include_package_data=True,
+    install_requires=requirements,
     entry_points={
         "console_scripts": [
             "tdmstovideo_converter = tdmstovideo.converter:main",
