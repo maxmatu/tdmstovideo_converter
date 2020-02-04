@@ -78,6 +78,7 @@ def convert(videotdms, metadatatdms, fps=None, use_local_fld=False, output_path=
         savepath = videotdms.split(".")[0]+".mp4"
     else:
         savepath = output_path
+        
     if os.path.isfile(savepath):
         print("The output file passed already exists {}".format(output_path))
         yn = input("Overwrite? [y/n] ")
