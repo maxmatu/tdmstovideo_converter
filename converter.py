@@ -59,13 +59,14 @@ def write_clip(data, savename, tot_frames, w, h, framerate, iscolor=False):
 
 
 
-def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
+def convert(videotdms, metadatatdms, fps=None, use_local_fld=False, output_path=False):
     """ 
         Converts a video from .tdms to .mp4. Needs to have access to a metadata .tdms file
         to get the expected frame size and number of frames to convert.
 
         :param videotdms: string with path to video .tdms
         :param metadatatdms: string with path to metadata .tdms
+        :param fps: int, optional. To specify the fps of the output file
         :param use_local_fld: if a string is passed the memmapped .tdms file is saved in a user given folder
         :param output_path: if passed it should be a string with the path to where the video .mp4 will be saved
     """
@@ -78,10 +79,19 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
     else:
         savepath = output_path
     if os.path.isfile(savepath):
-        raise FileExistsError("Output path points to an already existing file: {}".format(savepath))
+        print("The output file passed already exists {}".format(output_path))
+        yn = input("Overwrite? [y/n] ")
+        while yn.lower() not in ["y", "n"]:
+            yn = input("Please reply 'y' or 'n' ")
+        if yn.lower() == 'n':
+            raise FileExistsError("Output path points to an already existing file: {}".format(savepath))
+        else:
+            print("Overwriting output file")
 
     # Get metadata
     props, tot_frames = get_video_metadata(videotdms, metadatatdms)
+    if fps is None:
+        fps = props['fps']
 
     # Get temp directory to store memmapped data
     if use_local_fld:
@@ -91,8 +101,6 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
         tempdir = use_local_fld
     else:
         tempdir = os.path.split(videotdms)[0]
-
-
 
     # Open memmapped
     print('     Opening mmemmapped in: ' + tempdir)
@@ -107,7 +115,7 @@ def convert(videotdms, metadatatdms, use_local_fld=False, output_path=False):
 
     # Write to Video
     print('     Writing video at: ', savepath)
-    write_clip(tdms, savepath, tot_frames, props['width'], props['height'], props['fps'])
+    write_clip(tdms, savepath, tot_frames, props['width'], props['height'], fps)
     print('     Finished writing video in {}s.'.format(round(time.time()-openingend, 2)))
 
     # Check if all the frames have been converted
@@ -138,6 +146,16 @@ def get_parser():
         help="path to metadata .tdms",
     )
 
+
+    parser.add_argument(
+        "-fps",
+        "--fps",
+        dest="fps",
+        type=int,
+        default=None,
+        help="Fps of output video. Should match what you recorded at.",
+    )
+
     parser.add_argument(
         "-op",
         "--output-path",
@@ -165,8 +183,10 @@ def main():
         args.metadatatdms,
         use_local_fld=args.use_local_fld,
         output_path=args.output_path,
+        fps = args.fps,
     )
 
 
 if __name__ == "__main__":
     main()
+
