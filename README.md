@@ -15,6 +15,18 @@ Don't forget to clone this repository somewhere.
 All done!
 
 ## Usage
+### Command line usage
+In anaconda prompt with the environment activated, you can use it with: 
+```
+tdmstovideo_converter  path_to_video path_to_metadata
+```
+
+And if unsure, get help with:
+```
+tdmstovideo_converter  -h
+```
+
+
 ### Single file
 The simplest way to use the converter is with this command (in the anaconda prompot with `tdmsconverter` environemnt activated):
 ```
