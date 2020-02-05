@@ -1,13 +1,13 @@
 Python scripts to convert `.tdms` video files from mantis to `.mp4`
 
 ## Installation
-Open your anaconda prompt and use the following commands to create an environment to use the convert.
+Open your anaconda prompt and use the following commands to create an environment to use the convert [or use a pre-existing one].
 ```
 conda create -n tdmsconverter python=3.7
 ```
-Once the environment is created activate it with `conda activate tdmsconverter` and install other packages:
+Once the environment is created activate it with `conda activate tdmsconverter` and install with:
 ```
-pip install numpy opencv-python npTDMS tqdm
+pip install git+https://github.com/BrancoLab/tdmstovideo_converter.git
 ```
 
 Don't forget to clone this repository somewhere. 
