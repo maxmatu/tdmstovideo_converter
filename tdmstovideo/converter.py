@@ -104,7 +104,7 @@ def convert(videotdms, metadatatdms, fps=None, use_local_fld=False, output_path=
         tempdir = os.path.split(videotdms)[0]
 
     # Open memmapped
-    print('     Opening mmemmapped in: ' + tempdir)
+    print('     Opening mmemmapped file in: ' + tempdir+"[this might take a while...]")
     openstart = time.time()
     tdms = TdmsFile(videotdms, memmap_dir=tempdir)  # open tdms binary file as a memmapped object
     openingend = time.time()
