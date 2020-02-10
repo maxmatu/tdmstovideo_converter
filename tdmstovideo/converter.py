@@ -24,18 +24,18 @@ def get_video_metadata(videotdms, metadatatdms):
     # Get values to return
     metadata_object = metadata.object()
     props = {n:v for n,v in metadata_object.properties.items()} # fps, width, ...  
-
+    videosize = os.path.getsize(videotdms)
     # Check how many frames are in the video given frame size and # bites in video file
-    if props['width'] > 0:
+    #if props['width'] > 0:
         # Get size of video to be converted 
-        videosize = os.path.getsize(videotdms)
-        tot = np.int(round(videosize/(props['width']*props['height'])))  # tot number of frames 
-        if tot != props['last']:
-            raise ValueError('Calculated number of frames doesnt match what is stored in the metadata: {} vs {}'.format(tot, props['last']))
-    else:
-        tot = 0
+    #    videosize = os.path.getsize(videotdms)
+    #    tot = np.int(round(videosize/(props['width']*props['height'])))  # tot number of frames 
+    #    if tot != props['last']:
+    #        raise ValueError('Calculated number of frames doesnt match what is stored in the metadata: {} vs {}'.format(tot, props['last']))
+    #else:
+    #    tot = 0
 
-    return props, tot
+    return props#, tot
 
 
 def write_clip(data, savename, tot_frames, w, h, framerate, iscolor=False):
