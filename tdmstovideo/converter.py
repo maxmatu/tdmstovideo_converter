@@ -90,7 +90,7 @@ def convert(videotdms, metadatatdms, fps=None, use_local_fld=False, output_path=
             print("Overwriting output file")
 
     # Get metadata
-    props, tot_frames = get_video_metadata(videotdms, metadatatdms)
+    props = get_video_metadata(videotdms, metadatatdms)
     if fps is None:
         fps = props['fps']
 
