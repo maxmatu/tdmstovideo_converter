@@ -5,7 +5,7 @@ from nptdms import TdmsFile
 import time
 import argparse
 from tqdm import tqdm
-tot_frames = 444888
+tot_frames = 383033
 def get_video_metadata(videotdms, metadatatdms):
     """
     Gets metadata about the video to be converted. These include fps, width and height of 
