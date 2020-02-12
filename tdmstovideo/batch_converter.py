@@ -19,7 +19,7 @@ def get_tdmsfile_path(fld, name, what):
                          Expected only one.".format(
                         what, fld, name))
     return tdms[0]
-
+ 
 def convert_batch(fld, videoname, metadataname, dest_folder=None):
     """ Utility function to facilitate batch processing of videos to convert.
         It expects that the videos are organised in subfolders in a main folder.
